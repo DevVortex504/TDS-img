@@ -1,0 +1,49 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>TDS Converter</title>
+</head>
+<body>
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{message.tags}} m-2" id="alert-message-banner">
+                {{message}}
+                </div>   
+            {% endfor %}     
+        {% endif %}
+
+        <h1>Convert image to TDS format</h1>
+        <p>Also displays TDS Images</p>
+        <br>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="image" accept=".jpg,.jpeg,.png,.tds">
+            <button type="submit">Convert</button>
+        </form>
+        <br>
+        {% if tds_filename and tds_base64 %}
+            <h2>Conversion successful!</h2>
+            <p>Download your TDS file: 
+                <a href="data:text/plain;base64,{{ tds_base64 }}" download="{{ tds_filename }}">
+                    {{ tds_filename }}
+                </a>
+            </p>
+        {% endif %}
+        {% if img %}
+            <h2>TDS Image:</h2>
+            <img src="{{ img }}" alt="Converted TDS Image">
+            <p>Download as JPG: 
+                <a href="data:image/jpeg;base64,{{ jpg_base64 }}" download="{{ jpg_filename }}">
+                    {{ jpg_filename }}
+                </a>
+            </p>
+        {% endif %}
+    </div>
+</body>
+</html>
