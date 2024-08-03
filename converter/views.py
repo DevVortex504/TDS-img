@@ -42,6 +42,7 @@ def display_tds(tds_content):
     return img
 
 def index(request):
+    messages.info(request, 'Keep jpg image size below 1MB')
     if request.method == 'POST' and request.FILES.get('image'):
         image_file = request.FILES['image']
         file_extension = os.path.splitext(image_file.name)[1].lower()
